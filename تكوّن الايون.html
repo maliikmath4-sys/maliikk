@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلة المجهر — تكوّن الأيون Ion Formation</title>
+<style>
+:root{
+  --bg1:#eef4fb; --bg2:#f8fbff; --bg3:#e9f2ef;
+  --ink:#0f172a; --mut:#64748b;
+  --blue:#2563eb; --blue-soft:#eff6ff;
+  --cyan:#0891b2; --amber:#d97706; --red:#dc2626; --green:#059669;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+  background:linear-gradient(160deg,var(--bg1)0%,var(--bg2)45%,var(--bg3)100%);
+  background-attachment:fixed;color:var(--ink);overflow-x:hidden;
+}
+body.night{
+  --bg1:#16203a; --bg2:#0f172a; --bg3:#101d33;
+  --ink:#e2e8f0; --mut:#94a3b8;
+  --blue-soft:#1e293b;
+}
+.progress-wrap{position:fixed;top:0;right:0;left:0;height:5px;background:#dbe3ee;z-index:50}
+body.night .progress-wrap{background:#1e293b}
+.progress-fill{height:100%;width:7%;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--amber));transition:width .45s ease}
+.topbar{
+  position:fixed;top:5px;right:0;left:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 18px;backdrop-filter:blur(8px);background:rgba(248,251,255,.75);
+  border-bottom:1px solid #dde5ef;
+}
+body.night .topbar{background:rgba(15,23,42,.8);border-bottom-color:#1e293b}
+.brand{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px}
+.brand .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(37,99,235,.35)}
+.brand small{display:block;font-size:10.5px;color:var(--mut);font-weight:600}
+.tb-btns{display:flex;gap:7px}
+.tbtn{background:#fff;border:1px solid #dbe3ee;border-radius:10px;padding:6px 12px;font-size:12.5px;font-weight:700;
+  color:var(--ink);cursor:pointer;font-family:inherit;transition:all .15s;box-shadow:0 3px 10px rgba(15,23,42,.07)}
+.tbtn:hover{transform:translateY(-2px);background:var(--blue-soft);border-color:var(--blue)}
+body.night .tbtn{background:#1e293b;border-color:#334155}
+.crumbs{
+  position:fixed;top:54px;right:0;left:0;z-index:30;display:flex;align-items:center;gap:6px;
+  padding:7px 18px;font-size:12px;color:var(--mut);background:rgba(255,255,255,.55);border-bottom:1px dashed #e2e8f0;overflow:hidden;white-space:nowrap;
+}
+body.night .crumbs{background:rgba(15,23,42,.6);border-bottom-color:#1e293b}
+.crumbs b{color:var(--blue);font-weight:800;white-space:nowrap}
+.crumbs .sep{color:#cbd5e1;margin:0 2px}
+.deck{max-width:1080px;margin:0 auto;padding:112px 18px 90px}
+.screen{display:none}
+.screen.on{display:block;animation:shin .5s ease}
+@keyframes shin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ===================== HOME ===================== */
+.home-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:center}
+@media(max-width:860px){.home-grid{grid-template-columns:1fr}}
+.hero-side .kicker{display:inline-flex;align-items:center;gap:6px;background:var(--blue-soft);color:var(--blue);
+  border:1px solid #bfdbfe;padding:5px 14px;border-radius:30px;font-size:12.5px;font-weight:800}
+body.night .hero-side .kicker{border-color:#334155}
+.hero-title{font-size:clamp(30px,4.6vw,48px);font-weight:900;line-height:1.25;margin:14px 0 10px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan),var(--amber));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{color:var(--mut);font-size:15.5px;line-height:2;margin-bottom:18px}
+.hero-sub b{color:var(--ink)}
+.hero-steps{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.hstep{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #e2e8f0;border-radius:13px;
+  padding:10px 13px;font-size:13.5px;font-weight:700;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+body.night .hstep{background:#111c31;border-color:#26334d}
+.hstep .n{width:27px;height:27px;flex:0 0 27px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}
+.hstep small{display:block;color:var(--mut);font-weight:600;font-size:12px}
+.start-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;border-radius:15px;
+  font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 12px 30px rgba(37,99,235,.4);transition:all .18s}
+.start-btn:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 16px 40px rgba(37,99,235,.5)}
+
+/* 3D microscope scene */
+.m3d-scene{
+  position:relative;height:470px;perspective:1300px;cursor:grab;user-select:none;
+  background:
+    radial-gradient(circle at 50% 76%, rgba(56,189,248,.14), transparent 40%),
+    radial-gradient(ellipse at center,#fff,#eef3f9);border-radius:26px;
+  border:1px solid #e2e8f0;box-shadow:0 18px 45px rgba(15,23,42,.12);overflow:hidden;
+}
+body.night .m3d-scene{background:radial-gradient(ellipse at center,#1a2945,#0d1626);border-color:#26334d}
+.m3d-scene.drag{cursor:grabbing}
+.m3d-scene.zooming{animation:zoomCamb .8s ease forwards;pointer-events:none}
+@keyframes zoomCamb{to{transform:scale(3.1) translateY(-6%);opacity:0;filter:blur(16px)}}
+.m3d-obj{position:absolute;inset:0;transform-style:preserve-3d}
+.b3{position:absolute;left:50%;top:50%;transform-style:preserve-3d;margin:0}
+.b3f{position:absolute;backface-visibility:hidden;border:1px solid rgba(255,255,255,.08);border-radius:2px}
+.pedestal{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);width:340px;height:70px;
+  background:radial-gradient(ellipse at center,rgba(15,23,42,.22),transparent 68%)}
+.hint-arrow{position:absolute;bottom:16px;right:22px;display:flex;align-items:center;gap:7px;color:var(--amber);
+  font-size:13.5px;font-weight:900;background:rgba(255,255,255,.85);padding:8px 15px;border-radius:30px;
+  border:1px dashed var(--amber);box-shadow:0 6px 18px rgba(15,23,42,.12);animation:bob 1.6s ease-in-out infinite}
+body.night .hint-arrow{background:rgba(15,23,42,.85)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.spin-note{position:absolute;top:14px;right:16px;font-size:11.5px;color:var(--mut);font-weight:700;
+  display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.8);border-radius:20px;padding:5px 12px}
+body.night .spin-note{background:rgba(15,23,42,.8)}
+.part-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.pchip{background:#fff;border:1.6px solid #e2e8f0;border-radius:13px;padding:9px 8px;font-size:12.3px;font-weight:800;
+  cursor:pointer;text-align:center;transition:all .16s;font-family:inherit;color:var(--ink)}
+.pchip:hover{border-color:var(--blue);background:var(--blue-soft);transform:translateY(-2px)}
+.pchip b{display:block;font-size:16px}
+body.night .pchip{background:#111c31;border-color:#26334d}
+.part-tip{margin-top:8px;min-height:44px;background:#fff;border:1px solid #dbeafe;border-radius:12px;
+  padding:9px 13px;font-size:13px;line-height:1.8;color:var(--ink);display:none}
+body.night .part-tip{background:#111c31;border-color:#26334d}
+.part-tip.show{display:block;animation:shin .3s ease}
+
+/* ===================== CARDS / MATTER ===================== */
+.stage-head{margin-bottom:18px;text-align:center}
+.pill{display:inline-block;background:var(--blue-soft);color:var(--blue);border:1px solid #bfdbfe;
+  border-radius:30px;padding:4px 16px;font-size:12.5px;font-weight:800;margin-bottom:8px}
+body.night .pill{border-color:#334155}
+.stage-title{font-size:clamp(21px,3vw,29px);font-weight:900;margin-bottom:6px}
+.stage-sub{color:var(--mut);font-size:14px}
+.flow{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:13px}
+.flow span{background:#fff;border:1.6px solid #e2e8f0;border-radius:22px;padding:6px 15px;font-size:13px;font-weight:800}
+body.night .flow span{background:#111c31;border-color:#26334d}
+.flow i{color:var(--amber);font-weight:900;font-size:15px;font-style:normal}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px}
+.mcard{background:#fff;border:2px solid #e2e8f0;border-radius:20px;padding:22px 18px;cursor:pointer;text-align:center;
+  transition:all .18s;position:relative;overflow:hidden;font-family:inherit}
+body.night .mcard{background:#111c31;border-color:#26334d}
+.mcard:hover{transform:translateY(-5px);border-color:var(--blue);box-shadow:0 14px 34px rgba(37,99,235,.18)}
+.mcard .em{font-size:44px;display:block;margin-bottom:8px}
+.mcard h3{font-size:19px;font-weight:900;margin-bottom:6px}
+.mcard p{font-size:13px;color:var(--mut);line-height:1.9}
+.mcard .go{display:inline-block;margin-top:12px;background:var(--blue-soft);color:var(--blue);border:1px solid #bfdbfe;
+  padding:6px 16px;border-radius:20px;font-size:12.5px;font-weight:900;transition:all .15s}
+.mcard:hover .go{background:var(--blue);color:#fff;border-color:var(--blue)}
+.mcard.amber:hover{border-color:var(--amber)}
+.mcard.amber:hover .go{background:var(--amber);border-color:var(--amber)}
+.mcard.green:hover{border-color:var(--green)}
+.mcard.green:hover .go{background:var(--green);border-color:var(--green)}
+
+/* state boxes */
+.state-box{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:18px;margin-bottom:18px;box-shadow:0 8px 26px rgba(15,23,42,.06)}
+body.night .state-box{background:#111c31;border-color:#26334d}
+.state-box .sb-title{font-weight:900;font-size:15.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sb-title .tag{font-size:11px;background:var(--blue-soft);color:var(--blue);border-radius:20px;padding:2px 10px;font-weight:800}
+.solid-lattice{width:100%;height:190px;border-radius:14px;background:#f1f5f9}
+body.night .solid-lattice{background:#0d1730}
+.cube{rx:2}
+.liq-field{width:100%;height:170px;border-radius:14px;background:linear-gradient(180deg,#e0f2fe,#bae6fd);position:relative;overflow:hidden}
+body.night .liq-field{background:linear-gradient(180deg,#1c3f5e,#12314d)}
+.liq-circle{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;
+  animation:liqFloat 3s ease-in-out infinite}
+@keyframes liqFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.gas-field{width:100%;height:170px;border-radius:14px;background:#eef2ff;position:relative;overflow:hidden}
+body.night .gas-field{background:#131a33}
+.gas-dot{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;
+  animation:gasDrift 4.5s ease-in-out infinite}
+@keyframes gasDrift{0%,100%{transform:translate(0,0)}25%{transform:translate(14px,-12px)}50%{transform:translate(-10px,-22px)}75%{transform:translate(-16px,-6px)}}
+
+/* choice panel */
+.choice-panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px}
+.atom-choice{background:#fff;border:2px solid #e2e8f0;border-radius:18px;padding:16px;cursor:pointer;text-align:center;
+  transition:all .17s;font-family:inherit}
+body.night .atom-choice{background:#111c31;border-color:#26334d}
+.atom-choice:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:0 12px 30px rgba(37,99,235,.2)}
+.atom-choice .fml{font-size:26px;font-weight:900;font-family:"Cambria Math",serif;direction:ltr;display:block;margin-bottom:4px}
+.atom-choice small{color:var(--mut);font-size:12px;font-weight:700;line-height:1.9;display:block}
+.atom-choice .kind{display:inline-block;margin-top:8px;border-radius:20px;padding:3px 13px;font-size:11.5px;font-weight:900}
+.kind.metal{background:#dbeafe;color:var(--blue)}
+.kind.nonmetal{background:#fee2e2;color:var(--red)}
+
+/* ===================== INSIDE ATOM ===================== */
+.atom-stage{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:center}
+@media(max-width:820px){.atom-stage{grid-template-columns:1fr}}
+.atom-card{background:#fff;border:1px solid #e2e8f0;border-radius:22px;padding:20px;display:flex;flex-direction:column;
+  align-items:center;box-shadow:0 12px 34px rgba(15,23,42,.08);position:relative;overflow:hidden}
+body.night .atom-card{background:#111c31;border-color:#26334d}
+.atom-card.entering .atom-svg{animation:deepFocus 1s ease}
+@keyframes deepFocus{0%{transform:scale(3.2);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+.atom-host{width:100%;display:flex;justify-content:center}
+.atom-svg{width:230px;height:230px;overflow:visible}
+body.night .atom-svg{filter:drop-shadow(0 0 22px rgba(56,189,248,.12))}
+.shelltrk{fill:none;stroke:#94a3b8;stroke-dasharray:3 4;stroke-width:1.1}
+body.night .shelltrk{stroke:#55607a}
+.e{fill:#38bdf8;stroke:#bae6fd;stroke-width:1.3;filter:drop-shadow(0 0 4px #7dd3fc)}
+.e.hl{fill:#fbbf24;stroke:#fde68a;filter:drop-shadow(0 0 7px #fbbf24)}
+.e.hl.fly{animation:lossFly 1.5s ease-in forwards}
+@keyframes lossFly{to{transform:translate(260px,-120px);opacity:0}}
+.in-e{opacity:0}
+.in-e.on{animation:gainIn 1.5s ease-in forwards}
+@keyframes gainIn{from{transform:translate(-250px,160px);opacity:1}to{transform:translate(0,0);opacity:1}}
+.nucleus{fill:url(#nucG);stroke:#475569;stroke-width:1.4;animation:npulse 2.4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes npulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+.nlab{font-size:11px;font-weight:900;fill:#fff;text-anchor:middle;font-family:inherit}
+.orbit{animation:spin var(--d,9s) linear infinite;transform-origin:center;transform-box:fill-box}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proton-note{font-size:10.5px;fill:#64748b;text-anchor:middle}
+.atom-legend{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:13px}
+.legend-item{display:flex;align-items:center;gap:7px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:11px;
+  padding:6px 12px;font-size:12px;font-weight:700}
+body.night .legend-item{background:#0d1730;border-color:#26334d}
+.dot{width:13px;height:13px;border-radius:50%;flex:0 0 13px}
+.dot.p{background:#ef4444}
+.dot.n{background:#94a3b8}
+.dot.e{background:#38bdf8}
+.exp-panel{display:flex;flex-direction:column;gap:13px}
+.experiment{background:#fff;border:2px solid #e2e8f0;border-radius:17px;padding:15px;cursor:pointer;text-align:right;
+  transition:all .17s;font-family:inherit}
+body.night .experiment{background:#111c31;border-color:#26334d}
+.experiment:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,23,42,.12)}
+.experiment .top{display:flex;align-items:center;gap:10px;font-weight:900;font-size:15.5px;margin-bottom:5px}
+.experiment .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px}
+.experiment.lose .ic{background:#dbeafe;color:var(--blue)}
+.experiment.gain .ic{background:#fee2e2;color:var(--red)}
+.experiment p{font-size:12.6px;color:var(--mut);line-height:1.9}
+.experiment .tag2{display:inline-block;margin-top:7px;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:900}
+.tag2.cat{background:#dbeafe;color:var(--blue)}
+.tag2.an{background:#fee2e2;color:var(--red)}
+.atom-toggle{display:flex;gap:7px;justify-content:center;margin-top:12px}
+.tgl{background:#f8fafc;border:1.6px solid #e2e8f0;border-radius:20px;padding:5px 14px;font-weight:800;font-size:12.5px;
+  cursor:pointer;font-family:inherit;color:var(--mut)}
+.tgl.active{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+body.night .tgl{background:#0d1730;border-color:#26334d}
+
+/* ===================== ION JOURNEY ===================== */
+.ion-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;align-items:center}
+@media(max-width:820px){.ion-wrap{grid-template-columns:1fr}}
+.ion-card{background:#fff;border:1px solid #e2e8f0;border-radius:22px;padding:24px 20px;display:flex;flex-direction:column;
+  align-items:center;box-shadow:0 12px 34px rgba(15,23,42,.08);position:relative}
+body.night .ion-card{background:#111c31;border-color:#26334d}
+.ion-card.glow-blue{box-shadow:0 0 0 3px rgba(37,99,235,.18),0 16px 40px rgba(37,99,235,.16)}
+.ion-card.glow-red{box-shadow:0 0 0 3px rgba(220,38,38,.18),0 16px 40px rgba(220,38,38,.16)}
+.ion-badge{position:absolute;top:-16px;padding:8px 18px;border-radius:30px;font-weight:900;font-size:15px;color:#fff;
+  box-shadow:0 8px 22px rgba(15,23,42,.25);z-index:2}
+.ion-badge.neutral{background:linear-gradient(135deg,#64748b,#334155)}
+.ion-badge.positive{background:linear-gradient(135deg,var(--blue),#1d4ed8)}
+.ion-badge.negative{background:linear-gradient(135deg,var(--red),#b91c1c)}
+.info-panel{display:flex;flex-direction:column;gap:12px}
+.info-text{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px 18px;font-size:14.5px;line-height:2.1;
+  min-height:120px;box-shadow:0 6px 22px rgba(15,23,42,.06)}
+body.night .info-text{background:#111c31;border-color:#26334d}
+.info-text b{color:var(--blue)}
+.info-text .hl-pos{color:var(--blue);font-weight:900}
+.info-text .hl-neg{color:var(--red);font-weight:900}
+.counters{display:flex;gap:9px;flex-wrap:wrap}
+.cnt{flex:1;min-width:90px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:9px;text-align:center}
+body.night .cnt{background:#0d1730;border-color:#26334d}
+.cnt .k{font-size:11px;color:var(--mut);font-weight:800;display:block;margin-bottom:3px}
+.cnt .v{font-weight:900;font-size:16px}
+.cnt .v.pro{color:var(--red)}
+.cnt .v.ele{color:var(--cyan)}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap}
+.btn{flex:1;min-width:120px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;
+  border-radius:13px;padding:12px 16px;font-size:14.5px;font-weight:900;cursor:pointer;font-family:inherit;
+  box-shadow:0 8px 22px rgba(37,99,235,.3);transition:all .15s}
+.btn:hover:not(:disabled){transform:translateY(-2px)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.btn.ghost{background:#fff;color:var(--ink);border:1.6px solid #cbd5e1;box-shadow:none}
+.btn.ghost:hover{background:#f1f5f9;border-color:var(--blue)}
+.btn.red{background:linear-gradient(135deg,var(--red),#b91c1c);box-shadow:0 8px 22px rgba(220,38,38,.3)}
+body.night .btn.ghost{background:#0d1730;color:var(--ink);border-color:#334155}
+.charge-chip{text-align:center;font-size:13px;font-weight:800;padding:7px;border-radius:10px}
+.charge-chip.fin{background:#dcfce7;color:#065f46;border:1.5px solid #86efac}
+.flash{animation:flash 1s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(56,189,248,.55)}100%{box-shadow:0 0 0 26px rgba(56,189,248,0)}}
+
+/* ===================== SUMMARY ===================== */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.sum-grid{grid-template-columns:1fr}}
+.sum-card{border-radius:20px;padding:18px;color:#fff;position:relative;overflow:hidden}
+.sum-card.pos{background:linear-gradient(140deg,#2563eb,#1d4ed8)}
+.sum-card.neg{background:linear-gradient(140deg,#dc2626,#b91c1c)}
+.sum-card .t{font-size:22px;font-weight:900;direction:ltr;text-align:center;margin-bottom:6px}
+.sum-card .what{text-align:center;font-size:14px;font-weight:800;margin-bottom:12px;opacity:.92}
+.sum-card ul{list-style:none;font-size:13.2px;line-height:2.1}
+.sum-card li{padding-right:6px}
+.sum-card .big{font-size:15px;font-weight:900}
+.gold-rule{background:#fffbeb;border:2px solid #fcd34d;border-radius:16px;padding:14px 18px;margin-top:16px;text-align:center;
+  font-size:16px;font-weight:900;color:#92400e;line-height:2}
+body.night .gold-rule{background:#2a2413;border-color:#a16207;color:#fde68a}
+.gold-rule .plus{color:var(--blue)}
+.gold-rule .minus{color:var(--red)}
+
+/* quiz */
+.quiz-box{margin-top:20px;background:#fff;border:1.6px solid #bfdbfe;border-radius:20px;padding:18px 20px;box-shadow:0 8px 26px rgba(37,99,235,.1)}
+body.night .quiz-box{background:#111c31;border-color:#26334d}
+.quiz-title{font-weight:900;font-size:16.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.qitem{margin-bottom:14px}
+.qitem .qtxt{font-weight:800;font-size:14px;margin-bottom:8px}
+.qitem .qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.qopt{background:#f8fafc;border:1.6px solid #cbd5e1;border-radius:10px;padding:9px 11px;font-weight:700;cursor:pointer;
+  text-align:center;font-size:13.5px;font-family:inherit;transition:all .14s;color:var(--ink)}
+.qopt:hover{border-color:var(--blue);background:var(--blue-soft)}
+.qopt.ok{background:#d1fae5;border-color:var(--green);color:#064e3b;font-weight:900}
+.qopt.no{background:#fee2e2;border-color:var(--red);color:#7f1d1d;font-weight:900;animation:shake .3s ease}
+.qopt.dim{opacity:.35}
+@keyframes shake{20%{transform:translateX(5px)}40%{transform:translateX(-5px)}60%{transform:translateX(4px)}80%{transform:translateX(-3px)}}
+.quiz-result{margin-top:10px;text-align:center;font-weight:900;font-size:15px}
+.quiz-result.best{color:var(--green)}
+
+/* ===================== NAV ===================== */
+.botnav{position:fixed;bottom:0;right:0;left:0;z-index:45;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+  border-top:1px solid #e2e8f0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.night .botnav{background:rgba(15,23,42,.92);border-top-color:#1e293b}
+.navbtns{display:flex;gap:8px}
+.nv{display:flex;align-items:center;gap:6px;background:#fff;border:1.6px solid #cbd5e1;border-radius:12px;padding:9px 16px;
+  font-size:13.5px;font-weight:800;cursor:pointer;color:var(--ink);font-family:inherit;transition:all .15s}
+.nv:hover:not(:disabled){border-color:var(--blue);background:var(--blue-soft);transform:translateY(-1px)}
+.nv:disabled{opacity:.38;cursor:default}
+.nv.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));border-color:transparent;color:#fff}
+.nv.gohome{background:#fff;border-color:#e2e8f0}
+body.night .nv{background:#0d1730;color:var(--ink);border-color:#334155}
+body.night .nv.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff}
+.dots{display:flex;gap:6px;align-items:center}
+.dots button{width:11px;height:11px;border-radius:50%;border:none;background:#cbd5e1;cursor:pointer;padding:0;transition:all .2s}
+.dots button.done{background:#93c5fd}
+.dots button.active{background:var(--amber);transform:scale(1.45)}
+.dots button.done.active{background:var(--amber)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:90;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:18px;padding:22px;max-width:430px;width:100%;box-shadow:0 22px 60px rgba(15,23,42,.4)}
+body.night .modal-box{background:#111c31}
+.modal-box h3{margin-bottom:12px;font-size:18px}
+.modal-box p{font-size:13.5px;line-height:2;color:var(--mut);margin-bottom:9px}
+.modal-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.credit{text-align:center;color:var(--mut);font-size:12px;padding:14px 10px 6px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:70}
+.fom{font-family:"Cambria Math",serif;direction:ltr;display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-fill" id="progFill"></div></div>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="ico">🔬</div>
+    <div>رحلة المجهر<small>درس: تكوّن الأيون — كيمياء 🧪</small></div>
+  </div>
+  <div class="tb-btns">
+    <button class="tbtn" onclick="toggleNight()">🌙 الوضع الليلي</button>
+    <button class="tbtn" onclick="openModal()">؟ كيف ألعب</button>
+    <button class="tbtn" onclick="fsc()">⛶ ملء الشاشة</button>
+  </div>
+</div>
+
+<div class="crumbs" id="crumbs"><b>الرئيسية</b></div>
+
+<main class="deck">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen on" id="s-home">
+    <div class="home-grid">
+      <div class="hero-side">
+        <span class="kicker">🧪 كيمياء · تكوّن الأيون</span>
+        <h1 class="hero-title">ادخل إلى عالم الأيونات عبر المجهر</h1>
+        <p class="hero-sub">المجهر يفتح لك أبوابَ أصغر عالم… اضغط عليه <b>بالماوس</b> ودخل في رحلة منظمة وخطوة بخطوة:
+          حالات المادة ← ذرة ← كيف تتكوّن الأيونات وقد تتغيّر شحنتها.</p>
+        <div class="hero-steps">
+          <div class="hstep"><span class="n">1</span><div>اختر الحالة (صلب / سائل / غاز)<small>وادخل داخل جسيماتها التي تحوي الأيونات</small></div></div>
+          <div class="hstep"><span class="n">2</span><div>اطلع على داخل الذرة<small>بروتونات + ونيوترونات وإلكترونات −</small></div></div>
+          <div class="hstep"><span class="n">3</span><div>جرّب الفقد والاكتساب<small>فقد الإلكترون ← موجبة · اكتساب الإلكترون ← سالبة</small></div></div>
+        </div>
+        <button class="start-btn" onclick="enterJourney()">🚀 ابدأ الرحلة الآن</button>
+      </div>
+
+      <div>
+        <div class="m3d-scene" id="m3d">
+          <div class="m3d-obj" id="m3dObj"></div>
+          <div class="pedestal"></div>
+          <div class="spin-note">🖱 اسحب المجهر بالماوس لتدويره</div>
+          <div class="hint-arrow">👈 اضغط على المجهر للدخول</div>
+        </div>
+        <div class="part-chips" id="partChips"></div>
+        <div class="part-tip" id="partTip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MATTER ============ -->
+  <section class="screen" id="s-matter">
+    <div class="stage-head">
+      <span class="pill">المحطة الأولى</span>
+      <h2 class="stage-title">اختر حالة المادة لتدخل إلى جسيماتها</h2>
+      <p class="stage-sub">أين تريد أن توجّه نظرة المجهر؟ كل حالة تحوي جسيمات… وبعضها أيونات مشحونة.</p>
+    </div>
+    <div class="grid-3">
+      <button class="mcard" onclick="chooseMatter('solid')" style="font-family:inherit">
+        <span class="em">🧊</span>
+        <h3>الحالة الصلبة</h3>
+        <p>ملح الطعام NaCl — بلورة منظّمة من أيونات <b class="fom">Na⁺</b> و <b class="fom">Cl⁻</b> مرتبة جنباً إلى جنب.</p>
+        <span class="go">ادخل إلى البلورة ←</span>
+      </button>
+      <button class="mcard amber" onclick="chooseMatter('liquid')" style="font-family:inherit">
+        <span class="em">💧</span>
+        <h3>الحالة السائلة</h3>
+        <p>الماء المالح — الأيونات حرة تسبح وتتحرك بين جزيئات الماء وتنفصل.</p>
+        <span class="go">ادخل إلى المحلول ←</span>
+      </button>
+      <button class="mcard green" onclick="chooseMatter('gas')" style="font-family:inherit">
+        <span class="em">🎈</span>
+        <h3>الحالة الغازية</h3>
+        <p>ذرات الكلور والغازات — جسيمات تتنافر وتطير بسرعة كبيرة في كل الاتجاهات.</p>
+        <span class="go">ادخل إلى الغاز ←</span>
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--mut)">اختر بإصبعك… لا يوجد شيء عشوائي، كل خطوة أنت المتحكّم 🔍</div>
+  </section>
+
+  <!-- ============ STATE ============ -->
+  <section class="screen" id="s-state">
+    <div class="stage-head">
+      <span class="pill">المحطة الثانية</span>
+      <h2 class="stage-title" id="stateTitle">داخل الحالة</h2>
+      <p class="stage-sub">هذه هي الجسيمات كما يراها المجهر. اختر جسيماً وتكبير النظر عليه.</p>
+    </div>
+    <div class="state-box">
+      <div class="sb-title">👁 رؤية المجهر <span class="tag" id="stateTag"></span></div>
+      <svg class="solid-lattice" id="svgSolid" viewBox="0 0 300 190" style="display:none"></svg>
+      <div class="liq-field" id="liqField" style="display:none"></div>
+      <div class="gas-field" id="gasField" style="display:none"></div>
+    </div>
+    <h3 style="margin:6px 0 12px;font-size:16px;font-weight:900">⚡ اختر جسيماً داخل هذا الوسط لتكبير النظر عليه:</h3>
+    <div class="choice-panel">
+      <button class="atom-choice" onclick="chooseAtom('na')" style="font-family:inherit">
+        <span class="fml">Na</span>
+        <small>ذرة الصوديوم — فلزّ، عددها الذري 11، يميل <b>لِفقدان</b> إلكترون واحد ليصبح موجباً.</small>
+        <span class="kind metal">فلز → يميل للفقد</span>
+      </button>
+      <button class="atom-choice" onclick="chooseAtom('cl')" style="font-family:inherit">
+        <span class="fml">Cl</span>
+        <small>ذرة الكلور — لافلزّ، عددها الذري 17، يميل <b>لِاكتساب</b> إلكترون واحد ليصبح سالباً.</small>
+        <span class="kind nonmetal">لافلز → يميل للاكتساب</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ ATOM ============ -->
+  <section class="screen" id="s-atom">
+    <div class="stage-head">
+      <span class="pill">المحطة الثالثة</span>
+      <h2 class="stage-title">داخل الذرة — ماذا نجد هناك؟</h2>
+      <p class="stage-sub">تكبيرة المجهر وصلت إلى قلب الجسيم: نواة في المنتصف، وإلكترونات تدور في مدارات، والتوازن بينهما هو سرّ كل شيء.</p>
+    </div>
+    <div class="atom-stage">
+      <div class="atom-card entering" id="atomCard">
+        <div class="atom-host" id="atomHost"></div>
+        <div class="atom-legend">
+          <span class="legend-item"><span class="dot p"></span> بروتونات +</span>
+          <span class="legend-item"><span class="dot n"></span> نيوترونات</span>
+          <span class="legend-item"><span class="dot e"></span> إلكترونات −</span>
+        </div>
+        <div class="atom-toggle" id="atomToggle">
+          <button class="tgl" onclick="toggleAtom()" id="tglBtn" style="font-family:inherit">التبديل بين Na و Cl</button>
+        </div>
+      </div>
+      <div class="exp-panel">
+        <div style="background:#fffbeb;border:2px solid #fcd34d;border-radius:14px;padding:12px 15px;font-size:13px;font-weight:800;color:#92400e;line-height:1.9">
+          💡 الذرة في الأساس <b>متعادلة</b>: عدد البروتونات (+) = عدد الإلكترونات (−). أي تغيير في هذا التوازن يُنتج أيوناً.
+        </div>
+        <button class="experiment lose" onclick="goTo('cation')" style="font-family:inherit">
+          <div class="top"><span class="ic">➖</span> تجربة: فَقْد إلكترون</div>
+          <p>أخرج إلكتروناً من ذرة الصوديوم وشاهد كيف تصبح الشحنة <b>موجبة</b> (+1).</p>
+          <span class="tag2 cat">النتيجة: كاتيون موجب Na⁺</span>
+        </button>
+        <button class="experiment gain" onclick="goTo('anion')" style="font-family:inherit">
+          <div class="top"><span class="ic">➕</span> تجربة: اكتِساب إلكترون</div>
+          <p>أدخل إلكتروناً جديداً إلى ذرة الكلور وشاهد كيف تصبح الشحنة <b>سالبة</b> (−1).</p>
+          <span class="tag2 an">النتيجة: أنيون سالب Cl⁻</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATION ============ -->
+  <section class="screen" id="s-cation">
+    <div class="stage-head">
+      <span class="pill">التجربة ١ · الكاتيون</span>
+      <h2 class="stage-title">من ذرة الصوديوم إلى أيون موجب</h2>
+      <p class="stage-sub">شاهد خطوة بخطوة: كيف يفقد الإلكترون فيتحوّل إلى موجب.</p>
+    </div>
+    <div class="flow">
+      <span>ذرة متعادلة Na</span><i>▼ فَقْد إلكترون ▼</i><span>أيون موجب Na⁺</span>
+    </div>
+    <div class="ion-wrap">
+      <div class="ion-card glow-blue" id="naCard">
+        <div class="ion-badge neutral" id="naBadge">الشحنة: 0 — متعادلة</div>
+        <div class="atom-host" id="naHost"></div>
+      </div>
+      <div class="info-panel">
+        <div class="info-text" id="naInfo"></div>
+        <div class="counters">
+          <div class="cnt"><span class="k">البروتونات +</span><span class="v pro" id="naPro">11</span></div>
+          <div class="cnt"><span class="k">الإلكترونات −</span><span class="v ele" id="naEle">11</span></div>
+        </div>
+        <div class="charge-chip fin" id="naCharge" style="display:none"></div>
+        <div class="btnrow">
+          <button class="btn" id="naBtn" onclick="naNext()" style="font-family:inherit">🎬 شغّل التجربة</button>
+          <button class="btn ghost" onclick="naReset()" style="font-family:inherit">↻ إعادة</button>
+        </div>
+        <button class="btn ghost" onclick="goTo('anion')" style="font-family:inherit">🧪 جرّب التجربة الأخرى (الأنيون) ←</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ANION ============ -->
+  <section class="screen" id="s-anion">
+    <div class="stage-head">
+      <span class="pill">التجربة ٢ · الأنيون</span>
+      <h2 class="stage-title">من ذرة الكلور إلى أيون سالب</h2>
+      <p class="stage-sub">شاهد خطوة بخطوة: كيف يكتسب الإلكترون فيتحوّل إلى سالب.</p>
+    </div>
+    <div class="flow">
+      <span>ذرة متعادلة Cl</span><i>▼ اكتساب إلكترون ▼</i><span>أيون سالب Cl⁻</span>
+    </div>
+    <div class="ion-wrap">
+      <div class="ion-card glow-red" id="clCard">
+        <div class="ion-badge neutral" id="clBadge">الشحنة: 0 — متعادلة</div>
+        <div class="atom-host" id="clHost"></div>
+      </div>
+      <div class="info-panel">
+        <div class="info-text" id="clInfo"></div>
+        <div class="counters">
+          <div class="cnt"><span class="k">البروتونات +</span><span class="v pro" id="clPro">17</span></div>
+          <div class="cnt"><span class="k">الإلكترونات −</span><span class="v ele" id="clEle">17</span></div>
+        </div>
+        <div class="charge-chip fin" id="clCharge" style="display:none"></div>
+        <div class="btnrow">
+          <button class="btn red" id="clBtn" onclick="clNext()" style="font-family:inherit">🎬 شغّل التجربة</button>
+          <button class="btn ghost" onclick="clReset()" style="font-family:inherit">↻ إعادة</button>
+        </div>
+        <button class="btn ghost" onclick="goTo('cation')" style="font-family:inherit">🧪 جرّب التجربة الأخرى (الكاتيون) ←</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUMMARY ============ -->
+  <section class="screen" id="s-summary">
+    <div class="stage-head">
+      <span class="pill">المحطة الأخيرة</span>
+      <h2 class="stage-title">خلاصة الرحلة — أيون موجب وأيون سالب</h2>
+      <p class="stage-sub">قارن بين النتيجتين وتذكّر القاعدة الذهبية، ثم اختبر نفسك.</p>
+    </div>
+    <div class="ion-wrap" style="grid-template-columns:1fr 1fr">
+      <div class="info-text" style="text-align:center">
+        <div style="font-size:30px">😀</div>
+        <div style="font-weight:900;font-size:20px;color:var(--blue);direction:ltr">Na → Na⁺</div>
+        <div style="font-weight:900;font-size:15px;margin-bottom:8px">صار أيوناً موجباً (كاتيون)</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:10px;font-size:13px;line-height:2">
+          فَقَد إلكتروناً واحداً<br>
+          11 بروتون &gt; 10 إلكترونات<br>
+          الشحنة ← <b style="color:var(--blue)">(+)</b>
+        </div>
+      </div>
+      <div class="info-text" style="text-align:center">
+        <div style="font-size:30px">☹️</div>
+        <div style="font-weight:900;font-size:20px;color:var(--red);direction:ltr">Cl → Cl⁻</div>
+        <div style="font-weight:900;font-size:15px;margin-bottom:8px">صار أيوناً سالباً (أنيون)</div>
+        <div style="background:#fee2e2;border-radius:12px;padding:10px;font-size:13px;line-height:2">
+          اكْتَسَب إلكتروناً واحداً<br>
+          17 بروتون &lt; 18 إلكتروناً<br>
+          الشحنة ← <b style="color:var(--red)">(−)</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="gold-rule">
+      🏆 القاعدة الذهبية:<br>
+      عندما تَـفقد الإلكترونات → شحنتها <span class="plus">موجبة (+)</span> · عندما تكتَسب الإلكترونات → شحنتها <span class="minus">سالبة (−)</span>
+    </div>
+
+    <div class="quiz-box">
+      <div class="quiz-title">📝 اختبار سريع — اضغط الإجابة الصحيحة</div>
+      <div class="qitem">
+        <div class="qtxt">1) ذرة فقدت إلكتروناً واحداً تصبح شحنتها…</div>
+        <div class="qopts">
+          <button class="qopt" data-ok="0" onclick="answer(this)">موجبة (+)</button>
+          <button class="qopt" data-e="1" data-ok="1" onclick="answer(this)">سالبة (−)</button>
+          <button class="qopt" data-ok="0" onclick="answer(this)">متعادلة (0)</button>
+        </div>
+      </div>
+      <div class="qitem">
+        <div class="qtxt">2) لكي تصبح الذرة أيوناً سالباً يجب أن…</div>
+        <div class="qopts">
+          <button class="qopt" data-ok="0" onclick="answer(this)">تفقد إلكتروناً</button>
+          <button class="qopt" data-e="1" data-ok="1" onclick="answer(this)">تكتسب إلكتروناً</button>
+          <button class="qopt" data-ok="0" onclick="answer(this)">لا تفعل شيئاً</button>
+        </div>
+      </div>
+      <div class="qitem">
+        <div class="qtxt">3) كم إلكتروناً يتبقّى في أيون الصوديوم Na⁺ ؟ (العدد الذري 11)</div>
+        <div class="qopts">
+          <button class="qopt" data-ok="1" onclick="answer(this)">10</button>
+          <button class="qopt" data-e="1" data-ok="1" onclick="answer(this)">11</button>
+          <button class="qopt" data-ok="0" onclick="answer(this)">12</button>
+        </div>
+      </div>
+      <div class="qitem">
+        <div class="qtxt">4) شحنة أيون الكلوريد Cl⁻ بعد اكتساب إلكترون…</div>
+        <div class="qopts">
+          <button class="qopt" data-ok="0" onclick="answer(this)">(+2)</button>
+          <button class="qopt" data-e="1" data-ok="1" onclick="answer(this)">(−1)</button>
+          <button class="qopt" data-ok="0" onclick="answer(this)">(0)</button>
+        </div>
+      </div>
+      <div class="quiz-result" id="quizRes"></div>
+      <div style="display:flex;justify-content:center;gap:9px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn" onclick="confetti()" style="font-family:inherit">🎉 احتفل بالنجاح</button>
+        <button class="btn ghost" onclick="resetJourney()" style="font-family:inherit">↻ إعادة الرحلة من البداية</button>
+      </div>
+    </div>
+    <div class="credit">عرض تعليمي تفاعلي — تكوّن الأيون · كيمياء ٣-١</div>
+  </section>
+</main>
+
+<!-- ===================== NAV ===================== -->
+<nav class="botnav">
+  <div class="navbtns">
+    <button class="nv gohome" onclick="homeNow()" style="font-family:inherit">🏠 الرئيسية</button>
+    <button class="nv" id="btnPrev" onclick="prevGo()" style="font-family:inherit">← السابق</button>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="navbtns">
+    <button class="nv primary" id="btnNext" onclick="nextGo()" style="font-family:inherit">التالي →</button>
+  </div>
+</nav>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>؟ كيف تلعب هذه الرحلة</h3>
+    <p>۱. على الصفحة الرئيسية يوجد <b>مجهر ثلاثي الأبعاد</b>: اسحبه بالماوس لتدويره، واضغط عليه للدخول إلى العالم الداخلي.</p>
+    <p>۲. الرحلة منظمة بالأزرار في الأسفل: <b>السابق / التالي</b>، ونقاط التقدم توضح مكانك، وزر <b>الرئيسية</b> يخرجك في أي وقت.</p>
+    <p>۳. لست مضطراً لأي عشوائية: كل خطوة تختارها بنفسك بالضغط.</p>
+    <div class="modal-btns"><button class="btn ghost" onclick="closeModal()" style="font-family:inherit">فهمت، لنبدأ ✨</button></div>
+  </div>
+</div>
+
+<svg style="width:0;height:0;position:absolute">
+  <defs>
+    <radialGradient id="nucG" cx="35%" cy="35%">
+      <stop offset="0%" stop-color="#ff8a80"/><stop offset="55%" stop-color="#ef5350"/><stop offset="100%" stop-color="#b71c1c"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<div id="confetti"></div>
+
+<script>
+/* ================= STATE MACHINE ================= */
+const ORDER=['home','matter','state','atom','cation','anion','summary'];
+const NAVMAP={home:{prev:null,next:'matter'},matter:{prev:'home',next:'state'},
+  state:{prev:'matter',next:'atom'},atom:{prev:'state',next:null},
+  cation:{prev:'atom',next:'summary'},anion:{prev:'atom',next:'summary'},
+  summary:{prev:null,next:null}};
+const TRAIL={home:'الرئيسية',matter:'اختيار الحالة',state:'داخل الحالة',atom:'داخل الذرة',
+  cation:'التجربة: كاتيون موجب',anion:'التجربة: أنيون سالب',summary:'الخلاصة والاختبار'};
+let cur='home', reached=new Set(['home']), curAtom='na', curMatter='solid';
+
+function goTo(id){
+  if(!ORDER.includes(id)) return;
+  if(!reached.has(id)) reached.add(id);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  cur=id; renderChrome();
+  if(id==='atom') reAtom();
+  if(id==='cation'){ if(naPhase!==2) naReset(); }
+  if(id==='anion'){ if(clPhase!==2) clReset(); }
+  if(id==='summary') onSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderChrome(){
+  const crumbs=document.getElementById('crumbs');
+  let html='<b>الرئيسية</b>';
+  let path=[];
+  if(cur!=='home') path=['home',cur].filter(Boolean);
+  else path=['home'];
+  if(cur==='matter'||cur==='state'||cur==='atom'||cur==='cation'||cur==='anion'||cur==='summary'){
+    html='<b>الرئيسية</b>';
+    const trail=['state','atom','cation','anion','summary'].includes(cur)?['matter','state','atom']:[];
+    const steps=cur==='matter'?['matter']:cur==='state'?['matter','state']:cur==='atom'?['matter','state','atom']:['matter','state','atom',cur];
+    steps.forEach((s,i)=>{ html+='<span class="sep">›</span><span>'+(i===steps.length-1?'<b>'+TRAIL[s]+'</b>':TRAIL[s])+'</span>'; });
+  }
+  crumbs.innerHTML=html;
+  const idx=ORDER.indexOf(cur);
+  document.getElementById('progFill').style.width=((idx+1)/ORDER.length*100)+'%';
+  document.getElementById('btnNext').disabled = !NAVMAP[cur].next;
+  document.getElementById('btnPrev').disabled = !NAVMAP[cur].prev;
+  const dotBox=document.getElementById('dots'); dotBox.innerHTML='';
+  ORDER.forEach(id=>{
+    const b=document.createElement('button');
+    b.title=TRAIL[id];
+    if(reached.has(id)) b.classList.add('done');
+    if(id===cur) b.classList.add('active');
+    b.onclick=()=>{ if(reached.has(id)) goTo(id); };
+    dotBox.appendChild(b);
+  });
+}
+function nextGo(){ const n=NAVMAP[cur].next; if(n) goTo(n); else if(cur==='atom') shakeTip('⚠ اختر أولاً إحدى التجربتين (الكاتيون أو الأنيون) في بطاقة داخل الذرة'); }
+function prevGo(){ const p=NAVMAP[cur].prev; if(p) goTo(p); }
+function homeNow(){ const ok=confirm('هل تريد الخروج من الرحلة والعودة إلى الرئيسية؟'); if(ok) goTo('home'); }
+function shakeTip(msg){ alert(msg); }
+
+/* ================= 3D MICROSCOPE ================= */
+const CY=140;
+function face(part,cls,w,h,t){
+  const f=document.createElement('div');
+  f.className='b3f '+cls; f.style.width=w+'px'; f.style.height=h+'px';
+  f.style.left=(-w/2)+'px'; f.style.top=(-h/2)+'px'; f.style.transform=t;
+  part.appendChild(f); return f;
+}
+function b3(scene,o){
+  const w=o.w,h=o.h,d=o.d, ww=w/2,hh=h/2,dd=d/2;
+  const el=document.createElement('div'); el.className='b3';
+  const cols=o.c;
+  face(el,'front',w,h,'translateZ('+dd+'px)').style.background=cols.front;
+  face(el,'back',w,h,'rotateY(180deg) translateZ('+dd+'px)').style.background=cols.back;
+  face(el,'right',d,h,'rotateY(90deg) translateZ('+ww+'px)').style.background=cols.right;
+  face(el,'left',d,h,'rotateY(-90deg) translateZ('+ww+'px)').style.background=cols.left;
+  face(el,'top',w,d,'rotateX(90deg) translateZ('+hh+'px)').style.background=cols.top;
+  face(el,'bottom',w,d,'rotateX(-90deg) translateZ('+hh+'px)').style.background=cols.bottom;
+  const cx=o.x||0, cy=o.y||0, cz=o.z||0;
+  el.style.transform='rotateX('+(o.rx||0)+'deg) rotateY('+(o.ry||0)+'deg) rotateZ('+(o.rz||0)+'deg) translate3d('+cx+'px,'+(cy-CY)+'px,'+cz+'px)';
+  scene.appendChild(el);
+  return el;
+}
+const STEELS={front:'linear-gradient(180deg,#2c3e55,#1a2636)',back:'#0e1726',right:'#22334a',left:'#182333',top:'#3a506e',bottom:'#0b111c'};
+const NAVY={front:'linear-gradient(180deg,#3b5170,#24334d)',back:'#141f31',right:'#2b3d59',left:'#1d2b42',top:'#4a6387',bottom:'#0e1626'};
+const CHROME={front:'linear-gradient(180deg,#f2f7fc,#c2d0e0)',back:'#9fb0c4',right:'#8fa3b8',left:'#b6c6d8',top:'#ffffff',bottom:'#6a7c91'};
+const GLASS={front:'#0a121f',back:'#0a121f',right:'#0a121f',left:'#0a121f',top:'#16324a',bottom:'#0a121f'};
+const AMBER={front:'linear-gradient(180deg,#ffd97a,#f0a83c)',back:'#b97a1d',right:'#e0a03c',left:'#e8b24e',top:'#ffe9ad',bottom:'#8f5c16'};
+const STAGEc={front:'linear-gradient(180deg,#64748b,#475569)',back:'#334155',right:'#52627a',left:'#3f4f66',top:'#7d8ca3',bottom:'#2c3748'};
+
+function buildMicroscope(){
+  const sc=document.getElementById('m3dObj');
+  sc.innerHTML='';
+  b3(sc,{w:230,h:13,d:158,wx:0,y:10,c:{front:'linear-gradient(180deg,#374964,#1f2c3f)',back:'#111a28',right:'#2c3b53',left:'#1c2737',top:'#465b7b',bottom:'#0d1420'}});
+  b3(sc,{w:150,h:9,d:104,y:20,c:{front:'linear-gradient(180deg,#465b7b,#2a3950)',back:'#16202f',right:'#374964',left:'#23303f',top:'#5671a0',bottom:'#0e1726'}});
+  b3(sc,{w:44,h:182,d:44,x:-72,y:117,c:NAVY});
+  b3(sc,{w:56,h:18,d:56,x:-72,y:211,c:STEELS});
+  b3(sc,{w:150,h:15,d:40,x:0,y:187,c:STEELS});
+  b3(sc,{w:26,h:96,d:26,x:36,y:166,c:NAVY});
+  b3(sc,{w:20,h:30,d:20,x:42,y:232,rz:-22,c:CHROME});
+  b3(sc,{w:26,h:7,d:26,x:47,y:246,rz:-22,c:CHROME});
+  b3(sc,{w:40,h:9,d:40,x:28,y:122,c:STEELS});
+  b3(sc,{w:12,h:32,d:12,x:18,y:104,rx:7,c:GLASS});
+  b3(sc,{w:12,h:36,d:12,x:31,y:108,c:GLASS});
+  b3(sc,{w:12,h:32,d:12,x:43,y:104,rx:-7,c:GLASS});
+  b3(sc,{w:120,h:9,d:88,x:30,y:92,c:STAGEc});
+  b3(sc,{w:80,h:3,d:32,x:30,y:98.5,zi:40,c:{front:'rgba(125,211,252,.65)',back:'rgba(56,189,248,.4)',right:'rgba(56,189,248,.5)',left:'rgba(56,189,248,.5)',top:'#7dd3fc',bottom:'rgba(56,189,248,.3)'}});
+  b3(sc,{w:9,h:7,d:9,x:36,y:104.6,zi:41,c:{front:'#fff7ed',back:'#ffedd5',right:'#ffedd5',left:'#ffedd5',top:'#fff7ed',bottom:'#ffedd5'}});
+  b3(sc,{w:34,h:6,d:26,x:30,y:72,c:AMBER});
+  b3(sc,{w:9,h:30,d:30,x:-72,y:90,z:36,c:CHROME});
+  b3(sc,{w:9,h:30,d:30,x:-72,y:90,z:-36,c:CHROME});
+  b3(sc,{w:11,h:50,d:50,x:-72,y:70,z:42,c:CHROME});
+  b3(sc,{w:11,h:50,d:50,x:-72,y:70,z:-42,c:CHROME});
+}
+
+const PCHIPS=[['🔭','العدسة العينية','أنظارُك من خلالها: أول ما يلتقطه المجهر هو فيها، وترى من خلالها الجسيمات مكبّرة.'],['💡','الضوء والمرآة','يُضيء العينة من تحت المنضدة حتى تظهر الجسيمات والأيونات بوضوح.'],['🧫','العينة والمنضدة','المكان الذي توضع فيه قطعة الملح أو قطرات المحلول أو الغاز.'],['🎚️','براغي الضبط','تُقرّب العدسات وتبعّدها لتوصلنا من سطح العينة إلى طبيعة جسيماتها.'],['🔍','العدسة الشيئية','تقرّب الأشياء تكبيراً حقيقياً وتمدّنا بأول تكبيرة نحو الذرات والأيونات.'],['⚛️','النتيجة النهائية','كل هذا ليقول لنا: كل مادة مؤلّفة من جسيمات… وبعضها أيونات مشحونة.']];
+function buildChips(){
+  const box=document.getElementById('partChips'); box.innerHTML='';
+  PCHIPS.forEach(function(c,i){
+    const b=document.createElement('button'); b.className='pchip';
+    b.innerHTML='<b>'+c[0]+'</b>'+c[1]; b.style.fontFamily='inherit';
+    b.onclick=function(){ showTip(i); };
+    box.appendChild(b);
+  });
+}
+function showTip(i){
+  const t=document.getElementById('partTip');
+  t.innerHTML='<b style="color:var(--blue)">'+PCHIPS[i][0]+' '+PCHIPS[i][1]+'</b> — '+PCHIPS[i][2];
+  t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+}
+
+/* microscope drag + idle rotate */
+let rx0=22,ry0=-14,drag=false,lastAct=0,zoomDone=false,obj=null;
+let dx0=0,dy0=0,startX=0,startY=0;
+function applyRot(rx,ry){ obj.style.transform='rotateX('+rx+'deg) rotateY('+ry+'deg)'; }
+function initM3D(){
+  obj=document.getElementById('m3dObj');
+  const scene=document.getElementById('m3d');
+  scene.addEventListener('pointerdown',function(e){
+    if(zoomDone) return;
+    drag=true; scene.classList.add('drag'); lastAct=Date.now();
+    startX=e.clientX; startY=e.clientY; dx0=0; dy0=0;
+    scene.setPointerCapture(e.pointerId);
+  });
+  scene.addEventListener('pointermove',function(e){
+    if(!drag) return;
+    const ddx=e.clientX-startX, ddy=e.clientY-startY;
+    dx0+=Math.abs(ddx); dy0+=Math.abs(ddy);
+    rx0=Math.max(-25,Math.min(45,rx0-ddy*0.3));
+    ry0+=ddx*0.3;
+    applyRot(rx0,ry0);
+    startX=e.clientX; startY=e.clientY; lastAct=Date.now();
+  });
+  scene.addEventListener('pointerup',function(){
+    if(!drag) return; drag=false; scene.classList.remove('drag');
+    const dist=dx0+dy0;
+    if(dist<10 && (Date.now()-lastAct)<1000 && !zoomDone) enterJourney();
+  });
+  applyRot(rx0,ry0);
+  (function idle(){
+    if(!drag && Date.now()-lastAct>3200){ ry0+=0.16; applyRot(rx0,ry0); }
+    requestAnimationFrame(idle);
+  })();
+}
+
+/* enter journey = microscope click -> zoom -> matter */
+function enterJourney(){
+  if(zoomDone) return; zoomDone=true;
+  const sc=document.getElementById('m3d'); sc.classList.add('zooming');
+  setTimeout(function(){ goTo('matter'); setTimeout(function(){ sc.classList.remove('zooming'); zoomDone=false; },80); },760);
+}
+
+/* ================= ATOM RENDER ================= */
+const RADII=[36,66,98];
+function atomsvg(o){
+  let epos=[];
+  o.shells.forEach(function(n,si){
+    const r=RADII[si]||98, arr=[];
+    for(let i=0;i<n;i++){
+      const a=((i*360/n)-90)*Math.PI/180;
+      arr.push([r*Math.cos(a),r*Math.sin(a)]);
+    }
+    epos.push(arr);
+  });
+  let s='<svg class="atom-svg" viewBox="-128 -128 256 256">';
+  s+='<circle class="nucleus" r="27"/>';
+  s+='<text x="0" y="3" class="nlab" style="text-anchor:middle;font-size:11px;font-weight:900;fill:#fff" direction="ltr">'+o.p+'p · '+o.n+'n</text>';
+  const spin=o.spin||[];
+  o.shells.forEach(function(n,si){
+    const r=RADII[si]||98;
+    const last=si===o.shells.length-1;
+    s+='<g'+(spin[si]===false?'':' class="orbit" style="--d:'+(6+si*2.4)+'s"')+'>';
+    s+='<circle class="shelltrk" r="'+r+'"/>';
+    epos[si].forEach(function(pt,i){
+      const hl=(o.hl&&o.hl.shell===si&&o.hl.index===i);
+      s+='<circle class="e'+(hl?' hl':'')+'" cx="'+pt[0].toFixed(2)+'" cy="'+pt[1].toFixed(2)+'" r="5.4"/>';
+    });
+    if(o.extra&&last){
+      const pt=o.extra;
+      s+='<circle class="in-e" cx="'+pt[0].toFixed(2)+'" cy="'+pt[1].toFixed(2)+'" r="5.4"/>';
+    }
+    s+='</g>';
+  });
+  s+='</svg>';
+  return s;
+}
+function renderAtom(hostId,cfg){ document.getElementById(hostId).innerHTML=atomsvg(cfg); }
+
+const CFG_NA={label:'Na',p:11,n:12,shells:[2,8,1],spin:[true,true,false],hl:{shell:2,index:0}};
+const CFG_NA_empty={label:'Na',p:11,n:12,shells:[2,8,0],spin:[true,true,false]};
+const CFG_CL={label:'Cl',p:17,n:18,shells:[2,8,7],spin:[true,true,true],extra:[98,0]};
+const CFG_CL_full={label:'Cl',p:17,n:18,shells:[2,8,8],spin:[true,true,true]};
+
+function reAtom(){ renderAtom('atomHost', curAtom==='na'?CFG_NA:CFG_CL); }
+function toggleAtom(){
+  curAtom=(curAtom==='na')?'cl':'na';
+  document.getElementById('tglBtn').textContent='التبديل بين Na و Cl — المعروض الآن: '+(curAtom==='na'?'Na':'Cl');
+  reAtom();
+  document.getElementById('atomCard').classList.remove('entering');
+  void document.getElementById('atomCard').offsetWidth;
+  document.getElementById('atomCard').classList.add('entering');
+}
+
+/* ================= MATTER / STATE ================= */
+function chooseMatter(id){
+  curMatter=id;
+  const titles={solid:['🧊 الحالة الصلبة — بلورة NaCl','صلب: ملح الطعام NaCl (أيونات موجبة وأخرى سالبة في شبكة منتظمة)'],
+    liquid:['💧 الحالة السائلة — الماء المالح','سائل: المحلول الملحي (الأيونات منفصلة وحرة الحركة)'],
+    gas:['🎈 الحالة الغازية — ذرات الكلور والغازات','غاز: جسيمات سريعة متباعدة تتنافر وتتحرك بحرية']};
+  document.getElementById('stateTitle').textContent=titles[id][0];
+  document.getElementById('stateTag').textContent=titles[id][1];
+  document.getElementById('svgSolid').style.display = id==='solid'?'block':'none';
+  document.getElementById('liqField').style.display = id==='liquid'?'block':'none';
+  document.getElementById('gasField').style.display = id==='gas'?'block':'none';
+  goTo('state');
+}
+function buildSolid(){
+  const svg=document.getElementById('svgSolid'); svg.innerHTML='';
+  const rows=4,cols=9,cs=32,ox=14,oy=18;
+  let i=0;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    const x=ox+c*cs, y=oy+r*cs;
+    const pos=(r+c)%2===0;
+    svg.insertAdjacentHTML('beforeend','<g><rect x="'+x+'" y="'+y+'" width="'+(cs-5)+'" height="'+(cs-5)+'" rx="5" fill="'+(pos?'#dbeafe':'#fee2e2')+'" stroke="'+(pos?'#2563eb':'#dc2626')+'" stroke-width="1.4"/>'+
+      '<text x="'+(x+(cs-5)/2)+'" y="'+(y+(cs-5)/2+5)+'" text-anchor="middle" style="font-weight:900;font-size:14px;fill:'+(pos?'#1d4ed8':'#b91c1c')+'">'+(pos?'+':'−')+'</text></g>');
+  }
+}
+function buildLiquid(){
+  const f=document.getElementById('liqField'); f.innerHTML='';
+  const arr=[['+','#2563eb','#dbeafe'],['−','#dc2626','#fee2e2'],['+','#2563eb','#dbeafe'],['−','#dc2626','#fee2e2'],['+','#2563eb','#dbeafe'],['−','#dc2626','#fee2e2'],['+','#2563eb','#dbeafe'],['−','#dc2626','#fee2e2']];
+  arr.forEach(function(x,i){
+    const d=document.createElement('div'); d.className='liq-circle';
+    const sz=30+(i%3)*6;
+    d.style.width=sz+'px';d.style.height=sz+'px';d.style.left=(6+i*((100/8)))+'%';d.style.top=(26+(i%4)*28)+'px';
+    d.style.background=x[2]; d.style.border='2px solid '+x[1]; d.style.color=x[1]; d.style.fontSize='16px';
+    d.style.animationDelay=(i*0.35)+'s'; d.textContent=x[0]; f.appendChild(d);
+  });
+}
+function buildGas(){
+  const f=document.getElementById('gasField'); f.innerHTML='';
+  const arr=[['Na','#2563eb','#dbeafe'],['Cl','#dc2626','#fee2e2'],['Na','#2563eb','#dbeafe'],['Cl','#dc2626','#fee2e2'],['Na','#2563eb','#dbeafe'],['Cl','#dc2626','#fee2e2'],['Cl','#dc2626','#fee2e2'],['Na','#2563eb','#dbeafe']];
+  arr.forEach(function(x,i){
+    const d=document.createElement('div'); d.className='gas-dot';
+    d.style.width='46px';d.style.height='46px';d.style.left=(4+i*12)+'%';d.style.top=(14+(i%5)*30)+'px';
+    d.style.background=x[2];d.style.border='2.4px solid '+x[1];d.style.color=x[1];d.style.fontSize='14px';
+    d.style.animationDelay=(i*0.5)+'s'; d.textContent=x[0]; f.appendChild(d);
+  });
+}
+function chooseAtom(id){
+  curAtom=id; toggleAtomText(); goTo('atom');
+}
+function toggleAtomText(){ document.getElementById('tglBtn').textContent='التبديل بين Na و Cl — المعروض الآن: '+(curAtom==='na'?'Na':'Cl'); }
+
+/* ================= CATION JOURNEY (Na: lose) ================= */
+let naPhase=0, naBusy=false;
+function renderNa(){
+  if(naPhase===0) renderAtom('naHost',CFG_NA);
+  else if(naPhase===1) renderAtom('naHost',CFG_NA);
+  else renderAtom('naHost',CFG_NA_empty);
+}
+function naReset(){
+  naPhase=0; naBusy=false;
+  document.getElementById('naInfo').innerHTML='<b>ذرة الصوديوم Na</b> — عددها الذري 11<br>11 بروتوناً (+) و11 إلكتروناً (−) → الشحنة <b>0 (متعادلة)</b>. سنجرّب إخراج إلكترون من المدار الخارجي.';
+  document.getElementById('naBadge').className='ion-badge neutral'; document.getElementById('naBadge').textContent='الشحنة: 0 — متعادلة';
+  document.getElementById('naPro').textContent='11'; document.getElementById('naEle').textContent='11';
+  document.getElementById('naCharge').style.display='none';
+  document.getElementById('naBtn').disabled=false; document.getElementById('naBtn').textContent='🎬 أخرِج الإلكترون الخارجي';
+  document.getElementById('naBtn').onclick=naNext;
+  renderNa();
+}
+function naNext(){
+  if(naBusy) return;
+  if(naPhase===0){
+    naBusy=true; document.getElementById('naBtn').disabled=true;
+    const el=document.querySelector('#naHost .e.hl');
+    if(el){ el.classList.add('fly'); }
+    document.getElementById('naInfo').innerHTML='🔦 <b>لحظة الفقد:</b> الإلكترون الخارجي يغادر الذرة… عدد الإلكترونات ينقص من 11 إلى <b>10</b>.';
+    setTimeout(function(){
+      naPhase=1; naBusy=false;
+      document.getElementById('naEle').textContent='10';
+      document.getElementById('naBadge').className='ion-badge positive'; document.getElementById('naBadge').textContent='الشحنة: (+) موجب';
+      document.getElementById('naCharge').style.display='block'; document.getElementById('naCharge').innerHTML='⚡ النتيجة: 11 بروتون &gt; 10 إلكترونات → الشحنة <b>+1 · كاتيون موجب</b>';
+      document.getElementById('naCard').classList.add('flash');
+      document.getElementById('naBtn').disabled=false; document.getElementById('naBtn').textContent='👀 شاهد النتيجة النهائية';
+    },1650);
+    return;
+  }
+  if(naPhase===1){
+    naPhase=2;
+    document.getElementById('naInfo').innerHTML='✅ <b>أصبح الصوديوم أيوناً موجباً Na⁺</b><br>الآن فقد إلكتروناً فصار عدد البروتونات <span class="hl-pos">11</span> أكبر من عدد الإلكترونات <span class="hl-pos">10</span>.<br><br>🧲 قاعدة: <b>كلما فَقَدت الذرة إلكتروناً أصبحت شحنتها موجبة (+)</b>. توزيعه صار مطابقاً لذرة النيون المستقرّة Ne.';
+    document.getElementById('naEle').textContent='10';
+    document.getElementById('naCharge').innerHTML='⚡ النتيجة النهائية: <b>Na⁺</b> أيون موجب (كاتيون) وقاعدته: فقد = +';
+    renderNa();
+    document.getElementById('naBtn').disabled=false; document.getElementById('naBtn').textContent='👉 إكمال الرحلة →';
+    document.getElementById('naBtn').onclick=function(){ goTo('summary'); };
+    return;
+  }
+}
+/* ================= ANION JOURNEY (Cl: gain) ================= */
+let clPhase=0, clBusy=false;
+function renderCl(){
+  if(clPhase===0||clPhase===1) renderAtom('clHost',CFG_CL);
+  else renderAtom('clHost',CFG_CL_full);
+}
+function clReset(){
+  clPhase=0; clBusy=false;
+  document.getElementById('clInfo').innerHTML='<b>ذرة الكلور Cl</b> — عددها الذري 17<br>17 بروتوناً (+) و17 إلكتروناً (−) → الشحنة <b>0 (متعادلة)</b>. سنجرّب إدخال إلكترون جديد إلى المدار الخارجي.';
+  document.getElementById('clBadge').className='ion-badge neutral'; document.getElementById('clBadge').textContent='الشحنة: 0 — متعادلة';
+  document.getElementById('clPro').textContent='17'; document.getElementById('clEle').textContent='17';
+  document.getElementById('clCharge').style.display='none';
+  document.getElementById('clBtn').disabled=false; document.getElementById('clBtn').textContent='🎬 أدخِل إلكتروناً جديداً';
+  document.getElementById('clBtn').onclick=clNext;
+  renderCl();
+}
+function clNext(){
+  if(clBusy) return;
+  if(clPhase===0){
+    clBusy=true; document.getElementById('clBtn').disabled=true;
+    renderCl();
+    setTimeout(function(){
+      const inc=document.getElementById('clHost').querySelector('.in-e');
+      if(inc) inc.classList.add('on');
+      document.getElementById('clInfo').innerHTML='🔦 <b>لحظة الاكتساب:</b> إلكترون جديد يقترب ويلتحق بالمدار الخارجي… عدد الإلكترونات يزداد من 17 إلى <b>18</b>.';
+      setTimeout(function(){
+        clPhase=1; clBusy=false;
+        document.getElementById('clEle').textContent='18';
+        document.getElementById('clBadge').className='ion-badge negative'; document.getElementById('clBadge').textContent='الشحنة: (−) سالب';
+        document.getElementById('clCharge').style.display='block'; document.getElementById('clCharge').innerHTML='⚡ النتيجة: 17 بروتوناً &lt; 18 إلكتروناً → الشحنة <b>−1 · أنيون سالب</b>';
+        document.getElementById('clCard').classList.add('flash');
+        document.getElementById('clBtn').disabled=false; document.getElementById('clBtn').textContent='👀 شاهد النتيجة النهائية';
+      },1500);
+    },350);
+    return;
+  }
+  if(clPhase===1){
+    clPhase=2;
+    document.getElementById('clInfo').innerHTML='✅ <b>أصبح الكلور أيوناً سالباً Cl⁻</b><br>اكتسب إلكتروناً فصار عدد الإلكترونات <span class="hl-neg">18</span> أكبر من عدد البروتونات <span class="hl-neg">17</span>.<br><br>🧲 قاعدة: <b>كلما اكتَسَبَت الذرة إلكتروناً أصبحت شحنتها سالبة (−)</b>. توزيعه صار مطابقاً لذرة الأرجون المستقرّة Ar.';
+    document.getElementById('clEle').textContent='18';
+    document.getElementById('clCharge').innerHTML='⚡ النتيجة النهائية: <b>Cl⁻</b> أيون سالب (أنيون) وقاعدته: اكتساب = −';
+    renderCl();
+    document.getElementById('clBtn').disabled=false; document.getElementById('clBtn').textContent='👉 إكمال الرحلة →';
+    document.getElementById('clBtn').onclick=function(){ goTo('summary'); };
+    return;
+  }
+}
+
+/* ================= SUMMARY + QUIZ ================= */
+function onSummary(){
+  document.querySelectorAll('.qitem').forEach(function(q){
+    q.removeAttribute('data-done');
+    q.querySelectorAll('.qopt').forEach(function(b){
+      b.classList.remove('ok','no','dim'); b.disabled=false;
+    });
+  });
+  document.getElementById('quizRes').textContent='';
+}
+function answer(el){
+  const q=el.closest('.qitem');
+  if(q.getAttribute('data-done')) return;
+  q.setAttribute('data-done','1');
+  if(el.dataset.e) el.classList.add('ok');
+  else el.classList.add('no');
+  q.querySelectorAll('.qopt').forEach(function(b){
+    b.disabled=true;
+    if(b===el) return;
+    if(b.dataset.e) b.classList.add('ok'); else b.classList.add('dim');
+  });
+  const all=document.querySelectorAll('.qitem[data-done]').length;
+  const ok=document.querySelectorAll('.qitem .qopt.ok').length;
+  if(all===4){
+    const res=document.getElementById('quizRes');
+    if(ok===4){ res.classList.add('best'); res.textContent='🎓 ممتاز! أجبت كل الأسئلة إجابات صحيحة — فهمت درس تكوّن الأيون!'; confetti(); }
+    else res.textContent='💪 وصلت إلى '+ok+' من 4 — راجع القاعدة الذهبية ثم اضغط "إعادة الرحلة" وعد للاختبار.';
+  }
+}
+function confetti(){
+  const c=document.getElementById('confetti'); c.innerHTML='';
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div');
+    const col=['#2563eb','#10b981','#f59e0b','#ec4899','#22d3ee','#dc2626'][i%6];
+    p.style.cssText='position:absolute;left:50%;top:50%;width:'+(6+Math.random()*6)+'px;height:'+(6+Math.random()*6)+'px;background:'+col+';border-radius:2px;opacity:.95;';
+    p.style.transform='rotate('+(Math.random()*360)+'deg)';
+    c.appendChild(p);
+    (function(p){ requestAnimationFrame(function(){ p.style.transition='transform 1.6s ease, opacity 1.6s ease'; p.style.transform='translate('+((Math.random()*2-1)*window.innerWidth*0.9)+'px,'+(Math.random()*window.innerHeight*0.9)+'px) rotate('+(Math.random()*720-360)+'deg)'; p.style.opacity='0'; }); })(p);
+  }
+  setTimeout(function(){ c.innerHTML=''; },1800);
+}
+function resetJourney(){
+  reached=new Set(['home']);
+  curAtom='na'; curMatter='solid';
+  naReset(); clReset(); toggleAtomText();
+  document.getElementById('naBtn').onclick=function(){ naNext(); };
+  document.getElementById('clBtn').onclick=function(){ clNext(); };
+  goTo('home');
+}
+function openModal(){ document.getElementById('modal').classList.add('show'); }
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+function fsc(){ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }
+function toggleNight(){ document.body.classList.toggle('night'); }
+
+/* nav helper fix (second pointerup listener overlap) */
+(function(){ 
+  buildMicroscope(); buildChips(); buildSolid(); buildLiquid(); buildGas(); renderChrome();
+  renderAtom('naHost',CFG_NA); renderAtom('clHost',CFG_CL); naReset(); clReset();
+  initM3D();
+})();
+</script>
+</body>
+</html>
